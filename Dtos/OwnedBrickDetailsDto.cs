@@ -4,6 +4,7 @@
         int Id,
         string BrickId,
         int ColorId,
-        int Count,
+        int NumAvailable,
+        int NumInUse,
         string LocationId);
 }

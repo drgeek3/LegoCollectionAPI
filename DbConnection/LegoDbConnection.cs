@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
 using LegoCollection.Dtos;
 using System.Drawing;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LegoCollection.DbConnection
 {
@@ -54,13 +55,15 @@ namespace LegoCollection.DbConnection
                             Subcategory = rdr.GetValue(3).ToString() ?? string.Empty,
                             Container = rdr.GetValue(4).ToString() ?? string.Empty,
                             Unit = rdr.GetValue(5).ToString() ?? string.Empty,
-                            UnitRow = rdr.GetValue(6).ToString() ?? string.Empty,
-                            Drawer = rdr.GetValue(7).ToString() ?? string.Empty,
+                            UnitRow = Convert.ToInt32(rdr.GetValue(6)),
+                            Drawer = Convert.ToInt32(rdr.GetValue(7)),
                             Color = rdr.GetValue(8).ToString() ?? string.Empty,
-                            Count = Convert.ToInt32(rdr.GetValue(9)),
-                            Overloaded = rdr.GetValue(10).ToString() == "Yes" ? true : false,
-                            Underfilled = rdr.GetValue(11).ToString() == "Yes" ? true : false,
-                            LocEmpty = rdr.GetValue(12).ToString() == "Yes" ? true : false
+                            NumAvailable = Convert.ToInt32(rdr.GetValue(9)),
+                            NumInUse = Convert.ToInt32(rdr.GetValue(10)),
+                            AltBrickId = rdr.GetValue(11).ToString() ?? string.Empty,
+                            Overloaded = rdr.GetValue(12).ToString() == "Yes" ? true : false,
+                            Underfilled = rdr.GetValue(13).ToString() == "Yes" ? true : false,
+                            LocEmpty = rdr.GetValue(14).ToString() == "Yes" ? true : false
                         });
                     }
                     con.Close();
@@ -95,13 +98,15 @@ namespace LegoCollection.DbConnection
                             Subcategory = rdr.GetValue(3).ToString() ?? string.Empty,
                             Container = rdr.GetValue(4).ToString() ?? string.Empty,
                             Unit = rdr.GetValue(5).ToString() ?? string.Empty,
-                            UnitRow = rdr.GetValue(6).ToString() ?? string.Empty,
-                            Drawer = rdr.GetValue(7).ToString() ?? string.Empty,
+                            UnitRow = Convert.ToInt32(rdr.GetValue(6)),
+                            Drawer = Convert.ToInt32(rdr.GetValue(7)),
                             Color = rdr.GetValue(8).ToString() ?? string.Empty,
-                            Count = Convert.ToInt32(rdr.GetValue(9)),
-                            Overloaded = rdr.GetValue(10).ToString() == "Yes" ? true : false,
-                            Underfilled = rdr.GetValue(11).ToString() == "Yes" ? true : false,
-                            LocEmpty = rdr.GetValue(12).ToString() == "Yes" ? true : false
+                            NumAvailable = Convert.ToInt32(rdr.GetValue(9)),
+                            NumInUse = Convert.ToInt32(rdr.GetValue(10)),
+                            AltBrickId = rdr.GetValue(11).ToString() ?? string.Empty,
+                            Overloaded = rdr.GetValue(12).ToString() == "Yes" ? true : false,
+                            Underfilled = rdr.GetValue(13).ToString() == "Yes" ? true : false,
+                            LocEmpty = rdr.GetValue(14).ToString() == "Yes" ? true : false
                         });
                     }
                     con.Close();
@@ -111,7 +116,7 @@ namespace LegoCollection.DbConnection
             return singleBrickReport;
         }
 
-        public async void AddCompleteRecord(FullRecordAdd newRecord)
+        public async Task AddCompleteRecordAsync(FullRecordAdd newRecord)
         {
             using (MySqlConnection con = new MySqlConnection(GetConnectionString()))
             {
@@ -129,7 +134,7 @@ namespace LegoCollection.DbConnection
                     {
                         strUnderfilled = "Yes";
                     }
-                    if (newRecord.Empty)
+                    if (newRecord.LocEmpty)
                     {
                         strEmpty = "Yes";
                     }
@@ -138,22 +143,23 @@ namespace LegoCollection.DbConnection
                     cmd.CommandType = System.Data.CommandType.Text;
                     cmd.Parameters.Clear();
 
-                    cmd.CommandText = "CALL ADD_FULL_RECORD(@brickId, @count, @description, @category, @subcategory, @altbrickid, @color, " +
-                        "@container, @unit, @unitrow, @drawer, @overloaded, @underfilled, @empty)";
-                    cmd.Parameters.AddWithValue("@brickId", newRecord.BrickId);
-                    cmd.Parameters.AddWithValue("@count", newRecord.Count);
+                    cmd.CommandText = "CALL ADD_FULL_RECORD(@brickId, @description, @category, @subcategory, @container, @unit, @unitrow, " +
+                        "@drawer, @color, @numavailable, @numinuse, @altbrickid, @overloaded, @underfilled, @locempty)";
+                    cmd.Parameters.AddWithValue("@brickId", newRecord.BrickId);                    
                     cmd.Parameters.AddWithValue("@description", newRecord.Description);
                     cmd.Parameters.AddWithValue("@category", newRecord.Category);
-                    cmd.Parameters.AddWithValue("@subcategory", newRecord.SubCategory);
-                    cmd.Parameters.AddWithValue("@altbrickid", newRecord.AltBrickId);
-                    cmd.Parameters.AddWithValue("@color", newRecord.Color);
+                    cmd.Parameters.AddWithValue("@subcategory", newRecord.Subcategory);                                        
                     cmd.Parameters.AddWithValue("@container", newRecord.Container);
                     cmd.Parameters.AddWithValue("@unit", newRecord.Unit);
                     cmd.Parameters.AddWithValue("@unitrow", newRecord.UnitRow);
                     cmd.Parameters.AddWithValue("@drawer", newRecord.Drawer);
+                    cmd.Parameters.AddWithValue("@color", newRecord.Color);
+                    cmd.Parameters.AddWithValue("@numavailable", newRecord.NumAvailable);
+                    cmd.Parameters.AddWithValue("@numinuse", newRecord.NumInUse);
+                    cmd.Parameters.AddWithValue("@altbrickid", newRecord.AltBrickId);
                     cmd.Parameters.AddWithValue("@overloaded", strOverloaded);
                     cmd.Parameters.AddWithValue("@underfilled", strUnderfilled);
-                    cmd.Parameters.AddWithValue("@empty", strEmpty);
+                    cmd.Parameters.AddWithValue("@locempty", strEmpty);
 
                     con.Open();
                     await cmd.ExecuteNonQueryAsync();
@@ -175,7 +181,7 @@ namespace LegoCollection.DbConnection
                     cmd.CommandType = System.Data.CommandType.Text;
                     cmd.Parameters.Clear();
 
-                    cmd.CommandText = "SELECT OWNED.ID, BRICK_ID, COLOR_ID, COLORS.COLOR, COUNT, LOCATION_ID FROM OWNED JOIN COLORS ON COLOR_ID = COLORS.ID";                    
+                    cmd.CommandText = "SELECT OWNED.ID, BRICK_ID, COLOR_ID, COLORS.COLOR, NUM_AVAILABLE, NUM_IN_USE, LOCATION_ID FROM OWNED JOIN COLORS ON COLOR_ID = COLORS.ID";                    
 
                     con.Open();
                     MySqlDataReader rdr = await cmd.ExecuteReaderAsync();
@@ -186,8 +192,9 @@ namespace LegoCollection.DbConnection
                             BrickId = rdr.GetValue(1).ToString() ?? string.Empty,
                             ColorId = Convert.ToInt32(rdr.GetValue(2)),
                             Color = rdr.GetValue(3).ToString() ?? string.Empty,
-                            Count = Convert.ToInt32(rdr.GetValue(4)),
-                            LocationId = rdr.GetValue(5).ToString() ?? string.Empty
+                            NumAvailable = Convert.ToInt32(rdr.GetValue(4)),
+                            NumInUse = Convert.ToInt32(rdr.GetValue(5)),
+                            LocationId = rdr.GetValue(6).ToString() ?? string.Empty
                         });
                     }
                     con.Close();
@@ -206,7 +213,7 @@ namespace LegoCollection.DbConnection
                     cmd.Connection = con;
                     cmd.CommandType = System.Data.CommandType.Text;
                     cmd.Parameters.Clear();
-                    cmd.CommandText = "SELECT OWNED.ID, BRICK_ID, COLOR_ID, COLORS.COLOR, COUNT, LOCATION_ID FROM OWNED JOIN COLORS ON COLOR_ID = COLORS.ID " +
+                    cmd.CommandText = "SELECT OWNED.ID, BRICK_ID, COLOR_ID, COLORS.COLOR, NUM_AVAILABLE, NUM_IN_USE, LOCATION_ID FROM OWNED JOIN COLORS ON COLOR_ID = COLORS.ID " +
                         "WHERE OWNED.ID = @Id";
                     cmd.Parameters.AddWithValue("@Id", id);
                     con.Open();
@@ -217,8 +224,9 @@ namespace LegoCollection.DbConnection
                         ownedResult.BrickId = rdr.GetValue(1).ToString() ?? string.Empty;
                         ownedResult.ColorId = Convert.ToInt32(rdr.GetValue(2));
                         ownedResult.Color = rdr.GetValue(3).ToString() ?? string.Empty;
-                        ownedResult.Count = Convert.ToInt32(rdr.GetValue(4));
-                        ownedResult.LocationId = rdr.GetValue(5).ToString() ?? string.Empty;                       
+                        ownedResult.NumAvailable = Convert.ToInt32(rdr.GetValue(4));
+                        ownedResult.NumInUse = Convert.ToInt32(rdr.GetValue(5));
+                        ownedResult.LocationId = rdr.GetValue(6).ToString() ?? string.Empty;                       
                     }
                     con.Close();
                 }
@@ -237,7 +245,7 @@ namespace LegoCollection.DbConnection
                     cmd.Connection = con;
                     cmd.CommandType = System.Data.CommandType.Text;
                     cmd.Parameters.Clear();
-                    cmd.CommandText = "SELECT OWNED.ID, BRICK_ID, COLOR_ID, COLORS.COLOR, COUNT, LOCATION_ID FROM OWNED JOIN COLORS ON COLOR_ID = COLORS.ID " +
+                    cmd.CommandText = "SELECT OWNED.ID, BRICK_ID, COLOR_ID, COLORS.COLOR, NUM_AVAILABLE, NUM_IN_USE, LOCATION_ID FROM OWNED JOIN COLORS ON COLOR_ID = COLORS.ID " +
                         "WHERE OWNED.BRICK_ID = @BrickId";
                     cmd.Parameters.AddWithValue("@BrickId", brickid);
                     con.Open();
@@ -250,8 +258,9 @@ namespace LegoCollection.DbConnection
                             BrickId = rdr.GetValue(1).ToString() ?? string.Empty,
                             ColorId = Convert.ToInt32(rdr.GetValue(2)),
                             Color = rdr.GetValue(3).ToString() ?? string.Empty,
-                            Count = Convert.ToInt32(rdr.GetValue(4)),
-                            LocationId = rdr.GetValue(5).ToString() ?? string.Empty,
+                            NumAvailable = Convert.ToInt32(rdr.GetValue(4)),
+                            NumInUse = Convert.ToInt32(rdr.GetValue(5)),
+                            LocationId = rdr.GetValue(6).ToString() ?? string.Empty,
                         });
                     }
                     con.Close();
@@ -271,10 +280,11 @@ namespace LegoCollection.DbConnection
                     cmd.Connection = con;
                     cmd.CommandType = System.Data.CommandType.Text;
                     cmd.Parameters.Clear();
-                    cmd.CommandText = "CALL ADD_OWNED_BRICK(@brickId, @colorId, @count, @locationId)";
+                    cmd.CommandText = "CALL ADD_OWNED_BRICK(@brickId, @colorId, @numavail, @numinuse, @locationId)";
                     cmd.Parameters.AddWithValue("@brickId", newOwned.BrickId);
                     cmd.Parameters.AddWithValue("@colorId", newOwned.ColorId);
-                    cmd.Parameters.AddWithValue("@count", newOwned.Count);
+                    cmd.Parameters.AddWithValue("@numavail", newOwned.NumAvailable);
+                    cmd.Parameters.AddWithValue("@numinuse", newOwned.NumInUse);
                     cmd.Parameters.AddWithValue("@locationId", newOwned.LocationId);
                     
                     con.Open();                    
@@ -303,11 +313,12 @@ namespace LegoCollection.DbConnection
                     cmd.CommandType = System.Data.CommandType.Text;
                     cmd.Parameters.Clear();
 
-                    cmd.CommandText = "CALL UPDATE_OWNED_BRICK (@id, @brickId, @colorId, @count, @locationId)";
+                    cmd.CommandText = "CALL UPDATE_OWNED_BRICK (@id, @brickId, @colorId, @numavail, @numinuse, @locationId)";
                     cmd.Parameters.AddWithValue("@id", updateOwned.Id);
                     cmd.Parameters.AddWithValue("@brickId", updateOwned.BrickId);
                     cmd.Parameters.AddWithValue("@colorId", updateOwned.ColorId);
-                    cmd.Parameters.AddWithValue("@count", updateOwned.Count);
+                    cmd.Parameters.AddWithValue("@numavail", updateOwned.NumAvailable);
+                    cmd.Parameters.AddWithValue("@numinuse", updateOwned.NumInUse);
                     cmd.Parameters.AddWithValue("@locationId", updateOwned.LocationId);
 
                     con.Open();
@@ -391,34 +402,35 @@ namespace LegoCollection.DbConnection
         //Originally, AddOwnedBrick only added the new entry and I needed a second one to return to the new Id
         //Then I just added the Id search to AddOwnedBrick making this one superfluous. 
         //Going to leave it here until the project is done just in case I need it for something else.
-        public Owned GetLastAddedBrick()
-        {
-            var lastBrickAdded = new Owned();
-            using (MySqlConnection con = new MySqlConnection(GetConnectionString()))
-            {
-                using (MySqlCommand cmd = new MySqlCommand())
-                {
-                    cmd.Connection = con;
-                    cmd.CommandType = System.Data.CommandType.Text;
-                    cmd.Parameters.Clear();
-                    cmd.CommandText = "SELECT OWNED.ID, BRICK_ID, COLOR_ID, COLORS.COLOR, COUNT, LOCATION_ID FROM OWNED JOIN COLORS ON COLOR_ID = COLORS.ID " +
-                        "ORDER BY OWNED.ID DESC LIMIT 1";
-                    con.Open();
-                    MySqlDataReader rdr = cmd.ExecuteReader();
-                    while (rdr.Read())
-                    {
-                        lastBrickAdded.Id = Convert.ToInt32(rdr.GetValue(0));
-                        lastBrickAdded.BrickId = rdr.GetValue(1).ToString() ?? string.Empty;
-                        lastBrickAdded.ColorId = Convert.ToInt32(rdr.GetValue(2));
-                        lastBrickAdded.Color = rdr.GetValue(3).ToString() ?? string.Empty;
-                        lastBrickAdded.Count = Convert.ToInt32(rdr.GetValue(4));
-                        lastBrickAdded.LocationId = rdr.GetValue(5).ToString() ?? string.Empty;
-                    }
-                    con.Close();
-                }
-            }
-            return lastBrickAdded;
-        }
+        //public Owned GetLastAddedBrick()
+        //{
+        //    var lastBrickAdded = new Owned();
+        //    using (MySqlConnection con = new MySqlConnection(GetConnectionString()))
+        //    {
+        //        using (MySqlCommand cmd = new MySqlCommand())
+        //        {
+        //            cmd.Connection = con;
+        //            cmd.CommandType = System.Data.CommandType.Text;
+        //            cmd.Parameters.Clear();
+        //            cmd.CommandText = "SELECT OWNED.ID, BRICK_ID, COLOR_ID, COLORS.COLOR, NUM_AVILABLE, NUM_IN_USE, LOCATION_ID FROM OWNED JOIN COLORS ON COLOR_ID = COLORS.ID " +
+        //                "ORDER BY OWNED.ID DESC LIMIT 1";
+        //            con.Open();
+        //            MySqlDataReader rdr = cmd.ExecuteReader();
+        //            while (rdr.Read())
+        //            {
+        //                lastBrickAdded.Id = Convert.ToInt32(rdr.GetValue(0));
+        //                lastBrickAdded.BrickId = rdr.GetValue(1).ToString() ?? string.Empty;
+        //                lastBrickAdded.ColorId = Convert.ToInt32(rdr.GetValue(2));
+        //                lastBrickAdded.Color = rdr.GetValue(3).ToString() ?? string.Empty;
+        //                lastBrickAdded.NumAvailable = Convert.ToInt32(rdr.GetValue(4));
+        //                lastBrickAdded.NumInUse = Convert.ToInt32(rdr.GetValue(5));
+        //                lastBrickAdded.LocationId = rdr.GetValue(6).ToString() ?? string.Empty;
+        //            }
+        //            con.Close();
+        //        }
+        //    }
+        //    return lastBrickAdded;
+        //}
 
     }
 }

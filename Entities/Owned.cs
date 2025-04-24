@@ -10,7 +10,9 @@
 
         public string? Color { get; set; }
 
-        public int Count { get; set; }
+        public int NumAvailable { get; set; }
+
+        public int NumInUse { get; set; }
 
         public string? LocationId { get; set; }
 

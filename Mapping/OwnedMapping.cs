@@ -11,7 +11,8 @@ namespace LegoCollection.Mapping
             {
                 BrickId = lego.BrickId,
                 ColorId = lego.ColorId,
-                Count = lego.Count,
+                NumAvailable = lego.NumAvailable,
+                NumInUse = lego.NumInUse,
                 LocationId = lego.LocationId
             };
         }
@@ -23,7 +24,8 @@ namespace LegoCollection.Mapping
                 Id = id,
                 BrickId = lego.BrickId,
                 ColorId = lego.ColorId,
-                Count = lego.Count,
+                NumAvailable = lego.NumAvailable,
+                NumInUse = lego.NumInUse,
                 LocationId = lego.LocationId
             };
         }
@@ -34,7 +36,8 @@ namespace LegoCollection.Mapping
                 lego.Id,
                 lego.BrickId ?? string.Empty,
                 lego.Color!,
-                lego.Count,
+                lego.NumAvailable,
+                lego.NumInUse,
                 lego.LocationId ?? string.Empty
                 );
         }
@@ -48,7 +51,8 @@ namespace LegoCollection.Mapping
                 brick.Id,
                 brick.BrickId ?? string.Empty,
                 brick.Color!,
-                brick.Count,
+                brick.NumAvailable,
+                brick.NumInUse,
                 brick.LocationId ?? string.Empty
                 ));
             }
@@ -62,7 +66,8 @@ namespace LegoCollection.Mapping
                 lego.Id,
                 lego.BrickId ?? string.Empty,
                 lego.ColorId,
-                lego.Count,
+                lego.NumAvailable,
+                lego.NumInUse,
                 lego.LocationId ?? string.Empty
                 );
         }

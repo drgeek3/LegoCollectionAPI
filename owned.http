@@ -5,55 +5,58 @@ GET http://localhost:5129/legos
 GET http://localhost:5129/legos/1357
 
 ###
-POST http://localhost:5129/legos/full
+POST http://localhost:5129/legos/
 Content-Type: application/json
 
 {
-  "BrickId": "3442",
-  "Count": 8,
-  "Description": "Thing a Day",
-  "Category": "Basic",
-  "SubCategory": "Tile",
-  "AltBrickId": "",
-  "Color": "White",
+  "BrickId": "35465",
+  "Description": "2x6 Test Wall",
+  "Category": "Wall",
+  "SubCategory": "Panel",  
   "Container": "Rack",
-  "Unit": "C",
-  "UnitRow": 5,
-  "Drawer": 6,
+  "Unit": "A",
+  "UnitRow": 7,
+  "Drawer": 8,  
+  "Color": "Dark Turquoise",
+  "NumAvailable": 29,
+  "NumInUse": 1,
+  "AltBrickId": false,
   "Overloaded": false,
   "Underfilled": false,
-  "Empty": false
+  "LocEmpty": false
 }
 
 ###
 GET http://localhost:5129/legos/owned
 
 ###
-GET http://localhost:5129/legos/owned/10
+GET http://localhost:5129/legos/owned/13
 
 ###
-GET http://localhost:5129/legos/owned/brick/1357
+GET http://localhost:5129/legos/owned/brick/4556
 
 ###
 POST http://localhost:5129/legos/owned
 Content-Type: application/json
 
 {
-  "BrickId" : "4556",
-  "ColorId": 3,
-  "Count": 1,
-  "LocationId": "RC23"
+  "BrickId" : "54678",
+  "ColorId": 11,
+  "NumAvailable": 8,
+  "NumInUse": 0,
+  "LocationId": "RB24"
 }
 
 ###
-PUT http://localhost:5129/legos/owned/23
+PUT http://localhost:5129/legos/owned/21
 Content-Type: application/json
 
  {      
-    "BrickId": "4556",
-    "ColorId": 3,
-    "Count": 15,
-    "LocationId": "RC23"
+    "BrickId": "3345",
+    "ColorId": 5,
+    "NumAvailable": 15,
+    "NumInUse": 4,
+    "LocationId": "RB24"
   }
 
 ### 

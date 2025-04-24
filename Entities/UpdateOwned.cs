@@ -7,7 +7,9 @@
 
         public int ColorId { get; set; }
 
-        public int Count { get; set; }
+        public int NumAvailable { get; set; }
+
+        public int NumInUse { get; set; }
 
         public required string LocationId { get; set; }
     }

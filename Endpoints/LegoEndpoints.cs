@@ -2,6 +2,7 @@
 using LegoCollection.Dtos;
 using LegoCollection.Entities;
 using LegoCollection.Mapping;
+using Microsoft.OpenApi;
 
 namespace LegoCollection.Endpoints
 {
@@ -9,7 +10,7 @@ namespace LegoCollection.Endpoints
     {
         const string GetOwnedEndpointName = "GetOwned";
         const string GetBrickReportEndpointName = "GetBrickReport";
-        const string GetOwnedBrickIdEndpointName = "GetOwnedBrickId";
+        const string GetOwnedBrickIdEndpointName = "GetOwnedBrickId";        
 
         public static RouteGroupBuilder MapLegoEndpoints(this WebApplication app)
         {
@@ -38,31 +39,13 @@ namespace LegoCollection.Endpoints
 
 
             // POST legos/full
-            group.MapPost("/full", (FullNewRecord newRecord) =>
+            group.MapPost("/", async (BrickReportDto newRecord) =>
             {
                 var dbConn = new LegoDbConnection(app.Configuration);
 
-                FullRecordAdd newComplete = new()
-                {
-                    BrickId = newRecord.BrickId,
-                    Count = newRecord.Count,
-                    Description = newRecord.Description,
-                    Category = newRecord.Category,
-                    SubCategory = newRecord.SubCategory,
-                    AltBrickId = newRecord.AltBrickId,
-                    Color = newRecord.Color,
-                    Container = newRecord.Container,
-                    Unit = newRecord.Unit,
-                    UnitRow = newRecord.UnitRow,
-                    Drawer = newRecord.Drawer,
-                    Overloaded = newRecord.Overloaded,
-                    Underfilled = newRecord.Underfilled,
-                    Empty = newRecord.Empty
-                };
+                await dbConn.AddCompleteRecordAsync(newRecord.ToFullRecordEntity());  
 
-                dbConn.AddCompleteRecord(newComplete);
-
-                return Results.CreatedAtRoute(GetBrickReportEndpointName, new { id = newComplete.BrickId }, newComplete);
+                return Results.CreatedAtRoute(GetOwnedEndpointName, new { id = newRecord.BrickId }, newRecord);
             });
 
             //Owned Brick Endpoints
