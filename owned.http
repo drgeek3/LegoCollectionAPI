@@ -1,0 +1,63 @@
+
+GET http://localhost:5129/legos
+
+###
+GET http://localhost:5129/legos/1357
+
+###
+POST http://localhost:5129/legos/full
+Content-Type: application/json
+
+{
+  "BrickId": "3442",
+  "Count": 8,
+  "Description": "Thing a Day",
+  "Category": "Basic",
+  "SubCategory": "Tile",
+  "AltBrickId": "",
+  "Color": "White",
+  "Container": "Rack",
+  "Unit": "C",
+  "UnitRow": 5,
+  "Drawer": 6,
+  "Overloaded": false,
+  "Underfilled": false,
+  "Empty": false
+}
+
+###
+GET http://localhost:5129/legos/owned
+
+###
+GET http://localhost:5129/legos/owned/10
+
+###
+GET http://localhost:5129/legos/owned/brick/1357
+
+###
+POST http://localhost:5129/legos/owned
+Content-Type: application/json
+
+{
+  "BrickId" : "4556",
+  "ColorId": 3,
+  "Count": 1,
+  "LocationId": "RC23"
+}
+
+###
+PUT http://localhost:5129/legos/owned/23
+Content-Type: application/json
+
+ {      
+    "BrickId": "4556",
+    "ColorId": 3,
+    "Count": 15,
+    "LocationId": "RC23"
+  }
+
+### 
+DELETE http://localhost:5129/legos/owned/23
+
+###
+GET http://localhost:5129/colors
