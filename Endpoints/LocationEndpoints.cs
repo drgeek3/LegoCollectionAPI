@@ -38,9 +38,9 @@ namespace LegoCollection.Endpoints
             {
                 var dbConn = new LegoDbConnection(app.Configuration);
 
-                LocationEntity locationEntity = await dbConn.GetLocationByLocationId(id);
+                List<LocationEntity> locationEntity = await dbConn.GetLocationByLocationId(id);
 
-                return locationEntity is null ? Results.NotFound() : Results.Ok(locationEntity.ToLocationDto());
+                return locationEntity is null ? Results.NotFound() : Results.Ok(locationEntity.ToLocationDtoList());
             })
                 .WithName(GetLocationByLocationName);
 

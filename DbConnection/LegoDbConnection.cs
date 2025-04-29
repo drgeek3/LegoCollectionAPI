@@ -469,9 +469,9 @@ namespace LegoCollection.DbConnection
         }
 
         //GET location by location id
-        public async Task<LocationEntity> GetLocationByLocationId(string? id)
+        public async Task<List<LocationEntity>> GetLocationByLocationId(string? id)
         {
-            var locationResult = new LocationEntity();
+            List<LocationEntity> locationResult = new List<LocationEntity>();
             using (MySqlConnection con = new MySqlConnection(GetConnectionString()))
             {
                 using (MySqlCommand cmd = new MySqlCommand())
@@ -485,15 +485,18 @@ namespace LegoCollection.DbConnection
                     MySqlDataReader rdr = await cmd.ExecuteReaderAsync();
                     while (rdr.Read())
                     {
-                        locationResult.Id = Convert.ToInt32(rdr.GetValue(0));
-                        locationResult.LocationId = rdr.GetValue(1).ToString() ?? string.Empty;
-                        locationResult.Container = rdr.GetValue(2).ToString() ?? string.Empty;
-                        locationResult.Unit = rdr.GetValue(3).ToString() ?? string.Empty;
-                        locationResult.UnitRow = Convert.ToInt32(rdr.GetValue(4));
-                        locationResult.Drawer = Convert.ToInt32(rdr.GetValue(5));
-                        locationResult.Overloaded = rdr.GetValue(6).ToString() == "Yes" ? true : false;
-                        locationResult.Underfilled = rdr.GetValue(7).ToString() == "Yes" ? true : false;
-                        locationResult.LocationEmpty = rdr.GetValue(8).ToString() == "Yes" ? true : false;
+                        locationResult.Add(new LocationEntity()
+                        {
+                            Id = Convert.ToInt32(rdr.GetValue(0)),
+                            LocationId = rdr.GetValue(1).ToString() ?? string.Empty,
+                            Container = rdr.GetValue(2).ToString() ?? string.Empty,
+                            Unit = rdr.GetValue(3).ToString() ?? string.Empty,
+                            UnitRow = Convert.ToInt32(rdr.GetValue(4)),
+                            Drawer = Convert.ToInt32(rdr.GetValue(5)),
+                            Overloaded = rdr.GetValue(6).ToString() == "Yes" ? true : false,
+                            Underfilled = rdr.GetValue(7).ToString() == "Yes" ? true : false,
+                            LocationEmpty = rdr.GetValue(8).ToString() == "Yes" ? true : false
+                        });
                     }
                     con.Close();
                 }
