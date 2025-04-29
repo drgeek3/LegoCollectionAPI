@@ -19,5 +19,6 @@ var app = builder.Build();
 
 app.MapLegoEndpoints();
 app.MapColorsEndpoints();
+app.MapLocationEndpoints();
 
 app.Run();

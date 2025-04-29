@@ -52,24 +52,24 @@ namespace LegoCollection.Mapping
 
         public static BrickReportDto ToBrickReportDto(this BrickLocation brickLocation)
         {
-            return new BrickReportDto()
-            {
-                BrickId = brickLocation.BrickId,
-                Description = brickLocation.Description,
-                Category = brickLocation.Category,
-                Subcategory = brickLocation.Subcategory,
-                Container = brickLocation.Container,
-                Unit = brickLocation.Unit,
-                UnitRow = brickLocation.UnitRow,
-                Drawer = brickLocation.Drawer,
-                Color = brickLocation.Color,
-                NumAvailable = brickLocation.NumAvailable,
-                NumInUse = brickLocation.NumInUse,
-                AltBrickId = brickLocation.AltBrickId,
-                Overloaded = brickLocation.Overloaded,
-                Underfilled = brickLocation.Underfilled,
-                LocEmpty = brickLocation.LocEmpty
-            };
+            return new BrickReportDto(
+
+                brickLocation.BrickId,
+                brickLocation.Description,
+                brickLocation.Category,
+                brickLocation.Subcategory,
+                brickLocation.Container,
+                brickLocation.Unit,
+                brickLocation.UnitRow,
+                brickLocation.Drawer,
+                brickLocation.Color,
+                brickLocation.NumAvailable,
+                brickLocation.NumInUse,
+                brickLocation.AltBrickId,
+                brickLocation.Overloaded,
+                brickLocation.Underfilled,
+                brickLocation.LocEmpty
+            );
         }
 
 

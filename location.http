@@ -1,0 +1,39 @@
+###
+GET http://localhost:5129/locations
+
+###
+GET http://localhost:5129/locations/27
+
+###
+POST http://localhost:5129/locations
+Content-Type: application/json
+
+ {      
+    "LocationId": "RB22",
+    "Container": "Rack",
+    "Unit": "B",
+    "UnitRow": 2,
+    "Drawer": 2,
+    "Overloaded": true,
+    "Underfilled": false,
+    "LocationEmpty": false
+  }
+
+###
+PUT http://localhost:5129/locations/27
+Content-Type: application/json
+
+  {
+    "Id": 27,
+    "LocationId": "RA33",
+    "Container": "Rack",
+    "Unit": "A",
+    "UnitRow": 3,
+    "Drawer": 3,
+    "Overloaded": false,
+    "Underfilled": true,
+    "LocationEmpty": false
+  }
+
+###
+DELETE http://localhost:5129/locations/140
