@@ -10,6 +10,7 @@ namespace LegoCollection.Endpoints
         public static RouteGroupBuilder MapLocationEndpoints(this WebApplication app)
         {
             const string GetLocationsEndpointName = "GetLocations";
+            const string GetLocationByLocationName = "GetLocationByLocation";
             var group = app.MapGroup("locations");
 
             //GET /locations
@@ -31,6 +32,17 @@ namespace LegoCollection.Endpoints
                 return locationEntity is null ? Results.NotFound() : Results.Ok(locationEntity.ToLocationDto());
             })
                 .WithName(GetLocationsEndpointName);
+
+            //GET /locations/location/locationid
+            group.MapGet("/location/{id}", async (string id) =>
+            {
+                var dbConn = new LegoDbConnection(app.Configuration);
+
+                LocationEntity locationEntity = await dbConn.GetLocationByLocationId(id);
+
+                return locationEntity is null ? Results.NotFound() : Results.Ok(locationEntity.ToLocationDto());
+            })
+                .WithName(GetLocationByLocationName);
 
             // POST /locations
             group.MapPost("/", async (LocationDto createLocation) =>

@@ -468,6 +468,40 @@ namespace LegoCollection.DbConnection
             return locationResult;
         }
 
+        //GET location by location id
+        public async Task<LocationEntity> GetLocationByLocationId(string? id)
+        {
+            var locationResult = new LocationEntity();
+            using (MySqlConnection con = new MySqlConnection(GetConnectionString()))
+            {
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    cmd.Connection = con;
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.Parameters.Clear();
+                    cmd.CommandText = "SELECT ID, LOCATION_ID, CONTAINER, UNIT, UNIT_ROW, DRAWER, OVERLOADED, UNDERFILLED, LOC_EMPTY FROM LOCATION WHERE LOCATION_ID = @Id";
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    con.Open();
+                    MySqlDataReader rdr = await cmd.ExecuteReaderAsync();
+                    while (rdr.Read())
+                    {
+                        locationResult.Id = Convert.ToInt32(rdr.GetValue(0));
+                        locationResult.LocationId = rdr.GetValue(1).ToString() ?? string.Empty;
+                        locationResult.Container = rdr.GetValue(2).ToString() ?? string.Empty;
+                        locationResult.Unit = rdr.GetValue(3).ToString() ?? string.Empty;
+                        locationResult.UnitRow = Convert.ToInt32(rdr.GetValue(4));
+                        locationResult.Drawer = Convert.ToInt32(rdr.GetValue(5));
+                        locationResult.Overloaded = rdr.GetValue(6).ToString() == "Yes" ? true : false;
+                        locationResult.Underfilled = rdr.GetValue(7).ToString() == "Yes" ? true : false;
+                        locationResult.LocationEmpty = rdr.GetValue(8).ToString() == "Yes" ? true : false;
+                    }
+                    con.Close();
+                }
+
+            }
+            return locationResult;
+        }
+
         //POST new location, probably won't use
         public async Task<int> AddLocation(LocationEntity newLocation)
         {

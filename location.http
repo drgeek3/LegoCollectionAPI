@@ -5,6 +5,9 @@ GET http://localhost:5129/locations
 GET http://localhost:5129/locations/27
 
 ###
+GET http://localhost:5129/locations/location/RC54
+
+###
 POST http://localhost:5129/locations
 Content-Type: application/json
 
