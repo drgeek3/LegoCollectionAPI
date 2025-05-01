@@ -9,18 +9,18 @@ POST http://localhost:5129/legos/
 Content-Type: application/json
 
 {
-  "BrickId": "35465",
-  "Description": "2x6 Test Wall",
-  "Category": "Wall",
-  "SubCategory": "Panel",  
+  "BrickId": "3024",
+  "Description": "1x1 Plate",
+  "Category": "Basic",
+  "SubCategory": "Plate",  
   "Container": "Rack",
   "Unit": "A",
-  "UnitRow": 7,
-  "Drawer": 8,  
-  "Color": "Dark Turquoise",
-  "NumAvailable": 29,
-  "NumInUse": 1,
-  "AltBrickId": false,
+  "UnitRow": "7",
+  "Drawer": "8",  
+  "Color": "White",
+  "NumAvailable": 6,
+  "NumInUse": 0,
+  "AltBrickId": "",
   "Overloaded": false,
   "Underfilled": false,
   "LocEmpty": false
