@@ -50,7 +50,6 @@ namespace LegoCollection.Endpoints
                 var dbConn = new LegoDbConnection(app.Configuration);
 
                 LocationEntity newLocation = createLocation.ToLocationEntity();
-                //newOwned.Color = dbConn.GetColor(newLego.ColorId);
 
                 newLocation.Id = await dbConn.AddLocation(newLocation);
 

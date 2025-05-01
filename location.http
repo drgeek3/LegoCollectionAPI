@@ -12,14 +12,14 @@ POST http://localhost:5129/locations
 Content-Type: application/json
 
  {      
-    "LocationId": "RB22",
+    "LocationId": "PH",
     "Container": "Rack",
-    "Unit": "B",
-    "UnitRow": 2,
-    "Drawer": 2,
-    "Overloaded": true,
+    "Unit": "G",
+    "UnitRow": "1",
+    "Drawer": "1",
+    "Overloaded": false,
     "Underfilled": false,
-    "LocationEmpty": false
+    "LocationEmpty": true
   }
 
 ###
@@ -31,10 +31,10 @@ Content-Type: application/json
     "LocationId": "RA33",
     "Container": "Rack",
     "Unit": "A",
-    "UnitRow": 3,
-    "Drawer": 3,
-    "Overloaded": false,
-    "Underfilled": true,
+    "UnitRow": "3",
+    "Drawer": "3",
+    "Overloaded": true,
+    "Underfilled": false,
     "LocationEmpty": false
   }
 

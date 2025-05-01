@@ -24,6 +24,7 @@ namespace LegoCollection.Mapping
 
         public static LocationEntity ToLocationEntity(this LocationDto location, int id)
         {
+
             return new LocationEntity()
             {
                 Id = id,
@@ -40,16 +41,21 @@ namespace LegoCollection.Mapping
 
         public static LocationDto ToLocationDto(this LocationEntity locationEntity)
         {
-            return new LocationDto(
-                locationEntity.Id,
-                locationEntity.LocationId,
-                locationEntity.Container,
-                locationEntity.Unit,
-                locationEntity.UnitRow,
-                locationEntity.Drawer,
-                locationEntity.Overloaded,
-                locationEntity.Underfilled,
-                locationEntity.LocationEmpty);
+            if(locationEntity.LocationId == "PH")
+            {
+                locationEntity.LocationId = locationEntity.Container.Substring(0,1) + locationEntity.Unit + locationEntity.UnitRow + locationEntity.Drawer;
+            } 
+
+                return new LocationDto(
+                    locationEntity.Id,
+                    locationEntity.LocationId,
+                    locationEntity.Container,
+                    locationEntity.Unit,
+                    locationEntity.UnitRow,
+                    locationEntity.Drawer,
+                    locationEntity.Overloaded,
+                    locationEntity.Underfilled,
+                    locationEntity.LocationEmpty);
         }
 
         public static List<LocationDto> ToLocationDtoList(this List<LocationEntity> locationEntity)
@@ -58,6 +64,11 @@ namespace LegoCollection.Mapping
 
             foreach (var location in locationEntity)
             {
+                if (location.LocationId == "PH")
+                {
+                    location.LocationId = location.Container.Substring(0, 1) + location.Unit + location.UnitRow + location.Drawer;
+                }
+
                 locationDtoOutput.Add(new LocationDto(
                     location.Id,
                     location.LocationId,

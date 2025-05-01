@@ -5,8 +5,8 @@
         string LocationId,
         string Container,
         string Unit,
-        int UnitRow,
-        int Drawer,
+        string UnitRow,
+        string Drawer,
         bool Overloaded,
         bool Underfilled,
         bool LocationEmpty
