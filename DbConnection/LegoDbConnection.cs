@@ -41,7 +41,7 @@ namespace LegoCollection.DbConnection
                     cmd.CommandType = System.Data.CommandType.Text;
                     cmd.Parameters.Clear();
 
-                    cmd.CommandText = "SELECT * FROM BRICK_LOCATION_REPORT ORDER BY CONTAINER, UNIT, UNIT_ROW, DRAWER";                    
+                    cmd.CommandText = "SELECT * FROM BRICK_LOCATION_REPORT";                    
                     
                     con.Open();
                     MySqlDataReader rdr = cmd.ExecuteReader();
@@ -181,7 +181,7 @@ namespace LegoCollection.DbConnection
                     cmd.CommandType = System.Data.CommandType.Text;
                     cmd.Parameters.Clear();
 
-                    cmd.CommandText = "SELECT OWNED.ID, BRICK_ID, COLOR_ID, COLORS.COLOR, NUM_AVAILABLE, NUM_IN_USE, LOCATION_ID FROM OWNED JOIN COLORS ON COLOR_ID = COLORS.ID";                    
+                    cmd.CommandText = "SELECT * FROM OWNED_BRICK_REPORT";                    
 
                     con.Open();
                     MySqlDataReader rdr = await cmd.ExecuteReaderAsync();
@@ -213,8 +213,7 @@ namespace LegoCollection.DbConnection
                     cmd.Connection = con;
                     cmd.CommandType = System.Data.CommandType.Text;
                     cmd.Parameters.Clear();
-                    cmd.CommandText = "SELECT OWNED.ID, BRICK_ID, COLOR_ID, COLORS.COLOR, NUM_AVAILABLE, NUM_IN_USE, LOCATION_ID FROM OWNED JOIN COLORS ON COLOR_ID = COLORS.ID " +
-                        "WHERE OWNED.ID = @Id";
+                    cmd.CommandText = "SELECT * FROM OWNED_BRICK_REPORT WHERE ID = @Id";
                     cmd.Parameters.AddWithValue("@Id", id);
                     con.Open();
                     MySqlDataReader rdr = await cmd.ExecuteReaderAsync();                    
@@ -245,8 +244,7 @@ namespace LegoCollection.DbConnection
                     cmd.Connection = con;
                     cmd.CommandType = System.Data.CommandType.Text;
                     cmd.Parameters.Clear();
-                    cmd.CommandText = "SELECT OWNED.ID, BRICK_ID, COLOR_ID, COLORS.COLOR, NUM_AVAILABLE, NUM_IN_USE, LOCATION_ID FROM OWNED JOIN COLORS ON COLOR_ID = COLORS.ID " +
-                        "WHERE OWNED.BRICK_ID = @BrickId";
+                    cmd.CommandText = "SELECT * FROM OWNED_BRICK_REPORT WHERE BRICK_ID = @BrickId";
                     cmd.Parameters.AddWithValue("@BrickId", brickid);
                     con.Open();
                     MySqlDataReader rdr = await cmd.ExecuteReaderAsync();
@@ -410,7 +408,7 @@ namespace LegoCollection.DbConnection
                     cmd.Connection = con;
                     cmd.CommandType = System.Data.CommandType.Text;
                     cmd.Parameters.Clear();
-                    cmd.CommandText = "SELECT ID, LOCATION_ID, CONTAINER, UNIT, UNIT_ROW, DRAWER, OVERLOADED, UNDERFILLED, LOC_EMPTY FROM LOCATION ORDER BY LOCATION_ID";
+                    cmd.CommandText = "SELECT * FROM LOCATION_REPORT";
                     con.Open();
                     MySqlDataReader rdr = await cmd.ExecuteReaderAsync();
                     while (rdr.Read())
@@ -445,7 +443,7 @@ namespace LegoCollection.DbConnection
                     cmd.Connection = con;
                     cmd.CommandType = System.Data.CommandType.Text;
                     cmd.Parameters.Clear();
-                    cmd.CommandText = "SELECT ID, LOCATION_ID, CONTAINER, UNIT, UNIT_ROW, DRAWER, OVERLOADED, UNDERFILLED, LOC_EMPTY FROM LOCATION WHERE LOCATION.ID = @Id";
+                    cmd.CommandText = "SELECT * FROM LOCATION_REPORT WHERE ID = @Id";
                     cmd.Parameters.AddWithValue("@Id", id);
                     con.Open();
                     MySqlDataReader rdr = await cmd.ExecuteReaderAsync();
@@ -479,7 +477,7 @@ namespace LegoCollection.DbConnection
                     cmd.Connection = con;
                     cmd.CommandType = System.Data.CommandType.Text;
                     cmd.Parameters.Clear();
-                    cmd.CommandText = "SELECT ID, LOCATION_ID, CONTAINER, UNIT, UNIT_ROW, DRAWER, OVERLOADED, UNDERFILLED, LOC_EMPTY FROM LOCATION WHERE LOCATION_ID = @Id";
+                    cmd.CommandText = "SELECT * FROM LOCATION_REPORT WHERE LOCATION_ID = @Id";
                     cmd.Parameters.AddWithValue("@Id", id);
                     con.Open();
                     MySqlDataReader rdr = await cmd.ExecuteReaderAsync();

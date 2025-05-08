@@ -33,7 +33,7 @@ GET http://localhost:5129/legos/owned
 GET http://localhost:5129/legos/owned/13
 
 ###
-GET http://localhost:5129/legos/owned/brick/4556
+GET http://localhost:5129/legos/owned/brick/1234
 
 ###
 POST http://localhost:5129/legos/owned
