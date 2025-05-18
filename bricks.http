@@ -1,0 +1,37 @@
+###
+GET http://localhost:5129/bricks
+
+###
+GET http://localhost:5129/bricks/27
+
+###
+GET http://localhost:5129/bricks/brick/1234
+
+###
+POST http://localhost:5129/bricks
+Content-Type: application/json
+
+ {      
+    "BrickId": "109234",
+    "Description": "Rack",
+    "Category": "Brick",
+    "Subcategory": "Fake",
+    "AltBrickId": "4659" 
+  }
+
+###
+PUT http://localhost:5129/bricks/38
+Content-Type: application/json
+
+  {
+    "Id": 38,
+    "BrickId": "109895",
+    "Description": "Fixed Description",
+    "Category": "Brick",
+    "Subcategory": "Real",
+    "AltBrickId": "4659"
+
+  }
+
+###
+DELETE http://localhost:5129/bricks/38

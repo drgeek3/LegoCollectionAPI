@@ -14,11 +14,13 @@ var builder = WebApplication.CreateBuilder(args);
 //    options.UseMySql(connString, ServerVersion.AutoDetect(connString));
 //});
 builder.Services.AddScoped<LegoDbConnection>();
+builder.Services.AddScoped<LocationDbConnection>();
 
 var app = builder.Build();
 
 app.MapLegoEndpoints();
 app.MapColorsEndpoints();
 app.MapLocationEndpoints();
+app.MapBricksEndpoints();
 
 app.Run();

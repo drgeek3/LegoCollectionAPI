@@ -16,7 +16,7 @@ namespace LegoCollection.Endpoints
             //GET /locations
             group.MapGet("/", async () =>
             {
-                var dbConn = new LegoDbConnection(app.Configuration);
+                var dbConn = new LocationDbConnection(app.Configuration);
                 List<LocationEntity> locationEntity = await dbConn.GetLocations();
 
                 return locationEntity.ToLocationDtoList();
@@ -25,7 +25,7 @@ namespace LegoCollection.Endpoints
             //GET /locations/id
             group.MapGet("/{id}", async (int id) =>
             {
-                var dbConn = new LegoDbConnection(app.Configuration);
+                var dbConn = new LocationDbConnection(app.Configuration);
 
                 LocationEntity locationEntity  = await dbConn.GetLocationById(id);
 
@@ -36,7 +36,7 @@ namespace LegoCollection.Endpoints
             //GET /locations/location/locationid
             group.MapGet("/location/{id}", async (string id) =>
             {
-                var dbConn = new LegoDbConnection(app.Configuration);
+                var dbConn = new LocationDbConnection(app.Configuration);
 
                 List<LocationEntity> locationEntity = await dbConn.GetLocationByLocationId(id);
 
@@ -47,7 +47,7 @@ namespace LegoCollection.Endpoints
             // POST /locations
             group.MapPost("/", async (LocationDto createLocation) =>
             {
-                var dbConn = new LegoDbConnection(app.Configuration);
+                var dbConn = new LocationDbConnection(app.Configuration);
 
                 LocationEntity newLocation = createLocation.ToLocationEntity();
 
@@ -59,7 +59,7 @@ namespace LegoCollection.Endpoints
             //PUT /locations/id
             group.MapPut("/{id}", (int id, LocationDto updatedLocation) =>
             {
-                var dbConn = new LegoDbConnection(app.Configuration);
+                var dbConn = new LocationDbConnection(app.Configuration);
 
                 var existingLocation = dbConn.GetLocationById(id);
 
@@ -76,7 +76,7 @@ namespace LegoCollection.Endpoints
             //DELETE /locations/id
             group.MapDelete("/{id}", (int id) =>
             {
-                var dbConn = new LegoDbConnection(app.Configuration);
+                var dbConn = new LocationDbConnection(app.Configuration);
                 dbConn.DeleteLocation(id);
 
                 return Results.NoContent();
