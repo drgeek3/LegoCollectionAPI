@@ -82,6 +82,15 @@ namespace LegoCollection.Endpoints
                 return Results.NoContent();
             });
 
+            //GET /bricks/categories
+            group.MapGet("/categories", async () =>
+            {
+                var dbConn = new BricksDbConnection(app.Configuration);
+                List<CategoriesEntity> categoriesEntity = await dbConn.GetCategories();
+
+                return categoriesEntity.ToCategoriesDtoList();
+            });
+
             return group;
         }
     }

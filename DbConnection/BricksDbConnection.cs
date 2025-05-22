@@ -194,5 +194,34 @@ namespace LegoCollection.DbConnection
                 }
             }
         }
+
+        //GET the Categories Table
+        public async Task<List<CategoriesEntity>> GetCategories()
+        {
+            List<CategoriesEntity> categoriesResult = new List<CategoriesEntity>();
+            using (MySqlConnection con = new MySqlConnection(GetConnectionString()))
+            {
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    cmd.Connection = con;
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.Parameters.Clear();
+                    cmd.CommandText = "SELECT * FROM CATEGORIES ORDER BY CATEGORY";
+                    con.Open();
+                    MySqlDataReader rdr = await cmd.ExecuteReaderAsync();
+                    while (rdr.Read())
+                    {
+                        categoriesResult.Add(new CategoriesEntity()
+                        {
+                            Id = Convert.ToInt32(rdr.GetValue(0)),
+                            Category = rdr.GetValue(1).ToString() ?? string.Empty,
+                            IsMain = rdr.GetBoolean(2)  
+                        });
+                    }
+                    con.Close();
+                }
+            }
+            return categoriesResult;
+        }
     }
 }
