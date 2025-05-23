@@ -215,7 +215,8 @@ namespace LegoCollection.DbConnection
                         {
                             Id = Convert.ToInt32(rdr.GetValue(0)),
                             Category = rdr.GetValue(1).ToString() ?? string.Empty,
-                            IsMain = rdr.GetBoolean(2)  
+                            IsMain = rdr.GetBoolean(2),
+                            Subcat = rdr.GetValue(3).ToString() ?? string.Empty
                         });
                     }
                     con.Close();

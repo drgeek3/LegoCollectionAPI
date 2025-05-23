@@ -4,6 +4,7 @@
     (
         int Id,
         string? Category,
-        bool IsMain
+        bool IsMain,
+        string? Subcat
     );
 }

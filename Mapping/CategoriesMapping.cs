@@ -15,7 +15,8 @@ namespace LegoCollection.Mapping
                 categoriesDtoOutput.Add(new CategoriesDto(
                     category.Id,
                     category.Category,
-                    category.IsMain
+                    category.IsMain,
+                    category.Subcat
                 ));
             }
 
