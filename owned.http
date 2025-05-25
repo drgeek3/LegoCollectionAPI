@@ -40,11 +40,11 @@ POST http://localhost:5129/legos/owned
 Content-Type: application/json
 
 {
-  "BrickId" : "54678",
+  "BrickId" : "44589",
   "ColorId": 11,
-  "NumAvailable": 8,
-  "NumInUse": 0,
-  "LocationId": "RB24"
+  "NumAvailable": 0,
+  "NumInUse": 4,
+  "LocationId": "RB2RA114"
 }
 
 ###
