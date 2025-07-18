@@ -41,7 +41,10 @@ namespace LegoCollection.DbConnection
                     cmd.CommandType = System.Data.CommandType.Text;
                     cmd.Parameters.Clear();
 
-                    cmd.CommandText = "SELECT * FROM BRICK_LOCATION_REPORT";                    
+                    //Explanation: The view that this uses returns too much information under load to return.
+                    //In addition, the intent of this page is to search for the brick you need, not to view a report of everything.
+                    //Hence, this simply returns something on the main page so it displays some,thing, and then you can search.
+                    cmd.CommandText = "SELECT * FROM BRICK_LOCATION_REPORT WHERE BRICK_ID='3001'";                    
                     
                     con.Open();
                     MySqlDataReader rdr = cmd.ExecuteReader();

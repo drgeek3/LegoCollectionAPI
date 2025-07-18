@@ -2,7 +2,7 @@
 GET http://localhost:5129/legos
 
 ###
-GET http://localhost:5129/legos/1357
+GET http://localhost:5129/legos/32000
 
 ###
 POST http://localhost:5129/legos/
