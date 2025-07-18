@@ -125,6 +125,47 @@ namespace LegoCollection.DbConnection
             return locationResult;
         }
 
+        //GET location by location id
+        public async Task<List<LocationBrickListEntity>> GetBrickListByLocationId(string? id)
+        {
+            List<LocationBrickListEntity> locationBricklistResult = new List<LocationBrickListEntity>();
+            using (MySqlConnection con = new MySqlConnection(GetConnectionString()))
+            {
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    cmd.Connection = con;
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.Parameters.Clear();
+                    cmd.CommandText = "SELECT * FROM BRICKS_IN_LOCATION WHERE LOCATION_ID = @Id";
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    con.Open();
+                    MySqlDataReader rdr = await cmd.ExecuteReaderAsync();
+                    while (rdr.Read())
+                    {
+                        locationBricklistResult.Add(new LocationBrickListEntity()
+                        {
+                            LocationId = rdr.GetValue(0).ToString() ?? string.Empty,
+                            BrickId = rdr.GetValue(1).ToString() ?? string.Empty,
+                            Description = rdr.GetValue(2).ToString() ?? string.Empty,
+                            Category = rdr.GetValue(3).ToString() ?? string.Empty,
+                            Subcategory = rdr.GetValue(4).ToString() ?? string.Empty,
+                            Container = rdr.GetValue(5).ToString() ?? string.Empty,
+                            Unit = rdr.GetValue(6).ToString() ?? string.Empty,
+                            UnitRow = rdr.GetValue(7).ToString() ?? string.Empty,
+                            Drawer = rdr.GetValue(8).ToString() ?? string.Empty,
+                            Color = rdr.GetValue(9).ToString() ?? string.Empty,
+                            NumAvailable = Convert.ToInt32(rdr.GetValue(10)),
+                            NumInUse = Convert.ToInt32(rdr.GetValue(11)),
+                            AltBrickId = rdr.GetValue(12).ToString() ?? string.Empty,
+                        });
+                    }
+                    con.Close();
+                }
+
+            }
+            return locationBricklistResult;
+        }
+
         //POST new location, probably won't use
         public async Task<int> AddLocation(LocationEntity newLocation)
         {

@@ -84,5 +84,32 @@ namespace LegoCollection.Mapping
 
             return locationDtoOutput;
         }
+
+        public static List<LocationBrickListDto> ToLocationBrickListDto(this List<LocationBrickListEntity> locationBricklistEntity)
+        {
+            List<LocationBrickListDto> locationBricklistDtoOutput = new List<LocationBrickListDto>();
+
+            foreach (var location in locationBricklistEntity)
+            {
+                locationBricklistDtoOutput.Add(new LocationBrickListDto(
+                    location.LocationId,
+                    location.BrickId,
+                    location.Description,
+                    location.Category,
+                    location.Subcategory,
+                    location.Container,
+                    location.Unit,
+                    location.UnitRow,
+                    location.Drawer,
+                    location.Color,
+                    location.NumAvailable,
+                    location.NumInUse,
+                    location.AltBrickId
+                ));
+            }
+
+            return locationBricklistDtoOutput;
+        }
+
     }
 }

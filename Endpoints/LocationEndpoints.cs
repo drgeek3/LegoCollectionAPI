@@ -11,6 +11,7 @@ namespace LegoCollection.Endpoints
         {
             const string GetLocationsEndpointName = "GetLocations";
             const string GetLocationByLocationName = "GetLocationByLocation";
+            const string GetBricklistByLocation = "GetBricklistByLocation";
             var group = app.MapGroup("locations");
 
             //GET /locations
@@ -43,6 +44,17 @@ namespace LegoCollection.Endpoints
                 return locationEntity is null ? Results.NotFound() : Results.Ok(locationEntity.ToLocationDtoList());
             })
                 .WithName(GetLocationByLocationName);
+
+            //GET /locations/bricklist/locationid
+            group.MapGet("/bricklist/{id}", async (string id) =>
+            {
+                var dbConn = new LocationDbConnection(app.Configuration);
+
+                List<LocationBrickListEntity> locationBricklistEntity = await dbConn.GetBrickListByLocationId(id);
+
+                return locationBricklistEntity is null ? Results.NotFound() : Results.Ok(locationBricklistEntity.ToLocationBrickListDto());
+            })
+                .WithName(GetBricklistByLocation);
 
             // POST /locations
             group.MapPost("/", async (LocationDto createLocation) =>
